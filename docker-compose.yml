@@ -1,0 +1,43 @@
+services:
+  jenkins:
+    build: ./jenkins
+    container_name: socket-jenkins
+    ports:
+      - "8090:8080"
+      - "50000:50000"
+    environment:
+      - SOCKET_API_KEY=${SOCKET_API_KEY}
+      - GITHUB_REPO_URL=${GITHUB_REPO_URL:-https://github.com/dc-larsen/nodegoat-jenkins-socket-demo.git}
+      - REPO_NAME=${REPO_NAME:-nodegoat-jenkins-socket-demo}
+      - GITHUB_REPO_URL_2=${GITHUB_REPO_URL_2:-}
+      - REPO_NAME_2=${REPO_NAME_2:-}
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./jenkins/casc:/var/jenkins_home/casc_configs
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:4.4
+    container_name: nodegoat-mongodb
+    user: mongodb
+    expose:
+      - 27017
+    volumes:
+      - mongodb_data:/data/db
+
+  nodegoat:
+    build: .
+    container_name: nodegoat-app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/nodegoat
+    command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo ready' && node artifacts/db-reset.js && npm start; do sleep 2; done"
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
+  mongodb_data:

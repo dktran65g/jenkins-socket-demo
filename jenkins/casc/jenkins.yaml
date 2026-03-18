@@ -1,0 +1,64 @@
+jenkins:
+  systemMessage: "Socket Security - NodeGoat Demo"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: admin
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - string:
+              scope: GLOBAL
+              id: socket-api-key
+              secret: "${SOCKET_API_KEY}"
+              description: "Socket Security API Key"
+
+jobs:
+  - script: |
+      pipelineJob('nodegoat-socket-scan') {
+        description('NodeGoat Socket Security Scan with Tier 1 Reachability')
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote {
+                  url("${GITHUB_REPO_URL}")
+                }
+                branch('*/main')
+              }
+            }
+            scriptPath('Jenkinsfile')
+          }
+        }
+      }
+      queue('nodegoat-socket-scan')
+
+      def repoUrl2 = System.getenv('GITHUB_REPO_URL_2')
+      if (repoUrl2) {
+        def repoName2 = System.getenv('REPO_NAME_2') ?: 'project-2'
+        pipelineJob("${repoName2}-socket-scan") {
+          description("Socket Security Scan for ${repoName2}")
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url("${GITHUB_REPO_URL}")
+                  }
+                  branch('*/main')
+                }
+              }
+              scriptPath('Jenkinsfile.2')
+            }
+          }
+        }
+        queue("${repoName2}-socket-scan")
+      }
