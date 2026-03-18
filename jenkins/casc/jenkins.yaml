@@ -40,25 +40,3 @@ jobs:
         }
       }
       queue('nodegoat-socket-scan')
-
-      def repoUrl2 = System.getenv('GITHUB_REPO_URL_2')
-      if (repoUrl2) {
-        def repoName2 = System.getenv('REPO_NAME_2') ?: 'project-2'
-        pipelineJob("${repoName2}-socket-scan") {
-          description("Socket Security Scan for ${repoName2}")
-          definition {
-            cpsScm {
-              scm {
-                git {
-                  remote {
-                    url("${GITHUB_REPO_URL_2}")
-                  }
-                  branch('**')
-                }
-              }
-              scriptPath('Jenkinsfile')
-            }
-          }
-        }
-        queue("${repoName2}-socket-scan")
-      }

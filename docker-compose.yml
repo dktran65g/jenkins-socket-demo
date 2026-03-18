@@ -9,8 +9,6 @@ services:
       - SOCKET_API_KEY=${SOCKET_API_KEY}
       - GITHUB_REPO_URL=${GITHUB_REPO_URL:-https://github.com/dc-larsen/nodegoat-jenkins-socket-demo.git}
       - REPO_NAME=${REPO_NAME:-nodegoat-jenkins-socket-demo}
-      - GITHUB_REPO_URL_2=${GITHUB_REPO_URL_2:-}
-      - REPO_NAME_2=${REPO_NAME_2:-}
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
     volumes:
       - jenkins_home:/var/jenkins_home
