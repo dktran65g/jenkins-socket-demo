@@ -32,7 +32,7 @@ jobs:
                 remote {
                   url("${GITHUB_REPO_URL}")
                 }
-                branch('*/main')
+                branch('*/master')
               }
             }
             scriptPath('Jenkinsfile')
@@ -51,12 +51,12 @@ jobs:
               scm {
                 git {
                   remote {
-                    url("${GITHUB_REPO_URL}")
+                    url("${GITHUB_REPO_URL_2}")
                   }
-                  branch('*/main')
+                  branch('*/master')
                 }
               }
-              scriptPath('Jenkinsfile.2')
+              scriptPath('Jenkinsfile')
             }
           }
         }

@@ -7,12 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Target Project') {
-            steps {
-                git url: env.TARGET_REPO_URL, branch: "${env.TARGET_BRANCH ?: 'master'}"
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install --production'
