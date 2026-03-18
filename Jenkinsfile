@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout Target Project') {
             steps {
-                git url: env.TARGET_REPO_URL, branch: "${env.TARGET_BRANCH ?: 'main'}"
+                git url: env.TARGET_REPO_URL, branch: "${env.TARGET_BRANCH ?: 'master'}"
             }
         }
 
