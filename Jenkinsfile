@@ -7,12 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install --ignore-scripts'
-            }
-        }
-
         stage('Socket Security Scan') {
             steps {
                 sh """
@@ -21,7 +15,7 @@ pipeline {
                         --repo ${REPO_NAME} \
                         --default-branch \
                         --reach \
-                        --reach-ecosystems npm \
+                        --reach-ecosystems go \
                         --disable-blocking \
                         --integration api
                 """
