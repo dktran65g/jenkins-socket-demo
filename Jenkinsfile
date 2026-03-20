@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        SOCKET_SECURITY_API_TOKEN = credentials('socket-api-key')
-        REPO_NAME = "${env.REPO_NAME ?: 'project-x'}"
+        SOCKET_SECURITY_API_TOKEN = credentials("${params.SOCKET_API_CREDENTIAL_ID ?: 'socket-api-key'}")
+        REPO_NAME = "${params.REPO_NAME ?: env.JOB_NAME}"
     }
 
     stages {
@@ -18,7 +18,7 @@ pipeline {
                 sh """
                     socketcli \
                         --target-path . \
-                        --repo ${env.REPO_NAME ?: 'project-x'} \
+                        --repo ${REPO_NAME} \
                         --default-branch \
                         --reach \
                         --reach-ecosystems npm \

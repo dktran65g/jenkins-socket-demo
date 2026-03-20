@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: "Socket Security - NodeGoat Demo"
+  systemMessage: "Socket Security - Jenkins Demo"
   numExecutors: 2
   securityRealm:
     local:
@@ -23,8 +23,12 @@ credentials:
 
 jobs:
   - script: |
-      pipelineJob('nodegoat-socket-scan') {
-        description('NodeGoat Socket Security Scan with Tier 1 Reachability')
+      def jobName = 'Tier-1-Reachability-Job-Template'
+      pipelineJob(jobName) {
+        description('Socket Security Scan with Tier 1 Reachability Template')
+        parameters {
+          stringParam('REPO_NAME', jobName, 'Repository name for Socket security scan')
+        }
         definition {
           cpsScm {
             scm {
@@ -39,4 +43,4 @@ jobs:
           }
         }
       }
-      queue('nodegoat-socket-scan')
+      // Do not auto-queue; let users trigger with parameters via Build with Parameters
