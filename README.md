@@ -25,9 +25,6 @@ cd jenkins-socket-demo
 ```bash
 # Required: your Socket API key
 export SOCKET_API_KEY=sktsec_your_key_here
-
-# Required: point Jenkins at your fork (repo containing the Jenkinsfile)
-export GITHUB_REPO_URL=https://github.com/YOUR_GITHUB_USER/jenkins-socket-demo.git
 ```
 
 ### 3. Start the stack
@@ -51,10 +48,11 @@ Jenkins will be available at **http://localhost:8090** (user: `admin`, password:
 
 ### 5. Trigger a scan
 
-1. Click to Open the job (i.e., **go-dvwa-jenkins-demo**) in Jenkins
-2. Click **Build with Parameters**
-3. Enter `REPO_NAME` (defaults to the job name if left blank)
-4. Click **Build**
+1. Before you start, make sure your GitHub project has commit or upload the **Jenkinsfile** to the root folder.
+2. Click to Open the job (i.e., **go-dvwa-jenkins-demo**) in Jenkins
+3. Click **Build with Parameters**
+4. Enter `REPO_NAME` (defaults to the job name if left blank)
+5. Click **Build**
 
 ### 6. View results
 
@@ -72,32 +70,37 @@ Jenkins will be available at **http://localhost:8090** (user: `admin`, password:
 | `REPO_NAME` | Job name | Repository name for Socket security scan |
 | `SOCKET_API_CREDENTIAL_ID` | `socket-api-key` | Override Socket API token credential ID |
 
-### Jenkinsfile
+### Jenkinsfile  (Make sure this file is added to your project root folder)
 
 ```groovy
 pipeline {
     agent any
+
     environment {
-        SOCKET_SECURITY_API_TOKEN = credentials('socket-api-key')
+        SOCKET_SECURITY_API_TOKEN = credentials("${params.SOCKET_API_CREDENTIAL_ID ?: 'socket-api-key'}")
         REPO_NAME = "${params.REPO_NAME ?: env.JOB_NAME}"
     }
+
     stages {
-        stage('Install Dependencies') {
-            steps { sh 'npm install --ignore-scripts' }
-        }
         stage('Socket Security Scan') {
             steps {
-                sh '''
+                sh """
                     socketcli \
                         --target-path . \
                         --repo ${REPO_NAME} \
                         --default-branch \
                         --reach \
-                        --reach-ecosystems npm \
+                        --reach-ecosystems go \
                         --disable-blocking \
                         --integration api
-                '''
+                """
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Scan complete. View results at https://socket.dev/dashboard'
         }
     }
 }
