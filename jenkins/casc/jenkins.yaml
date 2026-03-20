@@ -18,7 +18,7 @@ credentials:
           - string:
               scope: GLOBAL
               id: socket-api-key
-              secret: "${SOCKET_API_KEY}"
+              secret: "${SOCKET_SECURITY_API_TOKEN}"
               description: "Socket Security API Key"
 
 jobs:

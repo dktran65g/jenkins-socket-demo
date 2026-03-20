@@ -6,7 +6,7 @@ services:
       - "8090:8080"
       - "50000:50000"
     environment:
-      - SOCKET_API_KEY=${SOCKET_API_KEY}
+      - SOCKET_SECURITY_API_TOKEN=${SOCKET_SECURITY_API_TOKEN}
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins.yaml
     volumes:
       - jenkins_home:/var/jenkins_home

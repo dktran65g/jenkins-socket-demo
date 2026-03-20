@@ -107,7 +107,7 @@ pipeline {
 
 `jenkins/casc/jenkins.yaml` pre-configures:
 - Admin credentials (admin/admin)
-- Socket API key credential injected from `SOCKET_API_KEY` env var
+- Socket API key credential injected from `SOCKET_SECURITY_API_TOKEN` env var
 - Parameterized pipeline job with `REPO_NAME` defaulting to the job name
 - Job pointed at your fork via `GITHUB_REPO_URL` env var
 
