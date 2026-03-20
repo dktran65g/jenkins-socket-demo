@@ -44,6 +44,7 @@ Jenkins will be available at **http://localhost:8090** (user: `admin`, password:
 2. Edit **Copy from** set to **Tier-1-Reachability-Job-Template** 
 3. **Enter an item name** give it a name (i.e., **go-dvwa-jenkins-demo**)
 4. Click **OK**
+### Within the job configuration
 5. Change the **Defaut Value** field for parameterized **REPO_NAME** (i.e., **set it to the same as the job name**)
 6. Enter the **Repository URL**  (i.e., **https://github.com/YOR_GITHUB_USER/go-dvwa-gh**)
 4. Click **Save**
